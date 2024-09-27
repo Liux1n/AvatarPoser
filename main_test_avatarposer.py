@@ -19,7 +19,7 @@ from utils import utils_logger
 from utils import utils_option as option
 from data.select_dataset import define_Dataset
 from models.select_model import define_Model
-from utils import utils_visualize as vis
+# from utils import utils_visualize as vis
 
 save_animation = False
 resolution = (800,800)
@@ -134,24 +134,38 @@ def main(json_path='options/test_avatarposer.json'):
 
 
 
-        if index in [0, 10, 20] and save_animation:
-            video_dir = os.path.join(opt['path']['images'], str(index))
-            if not os.path.exists(video_dir):
-                os.makedirs(video_dir)
+        # if index in [0, 10, 20] and save_animation:
+        #     video_dir = os.path.join(opt['path']['images'], str(index))
+        #     if not os.path.exists(video_dir):
+        #         os.makedirs(video_dir)
 
-            save_video_path_gt = os.path.join(video_dir, 'gt.avi')
-            if not os.path.exists(save_video_path_gt):
-                vis.save_animation(body_pose=gt_body, savepath=save_video_path_gt, bm = model.bm, fps=60, resolution = resolution)
+        #     save_video_path_gt = os.path.join(video_dir, 'gt.avi')
+        #     if not os.path.exists(save_video_path_gt):
+        #         vis.save_animation(body_pose=gt_body, savepath=save_video_path_gt, bm = model.bm, fps=60, resolution = resolution)
 
-            save_video_path = os.path.join(video_dir, '{:d}.avi'.format(current_step))
-            vis.save_animation(body_pose=predicted_body, savepath=save_video_path, bm = model.bm, fps=60, resolution = resolution)
+        #     save_video_path = os.path.join(video_dir, '{:d}.avi'.format(current_step))
+        #     vis.save_animation(body_pose=predicted_body, savepath=save_video_path, bm = model.bm, fps=60, resolution = resolution)
 
 
         predicted_position = predicted_position#.cpu().numpy()
         gt_position = gt_position#.cpu().numpy()
 
+
+
         predicted_angle = predicted_angle.reshape(body_parms_pred['pose_body'].shape[0],-1,3)                    
         gt_angle = gt_angle.reshape(body_parms_gt['pose_body'].shape[0],-1,3)
+
+        if index in [0, 10, 20] and save_animation:
+            print(predicted_position.shape)
+            # save predicted_position
+            video_dir = os.path.join(opt['path']['images'], str(index))
+            if not os.path.exists(video_dir):
+                os.makedirs(video_dir)
+            
+            # save npy file
+            np.save(os.path.join(video_dir, 'predicted_position.npy'), predicted_position.cpu().numpy())
+            np.save(os.path.join(video_dir, 'gt_position.npy'), gt_position.cpu().numpy())
+            np.save(os.path.join(video_dir, 'predicted_angle.npy'), predicted_angle.cpu().numpy())
 
 
         pos_error_ = torch.mean(torch.sqrt(torch.sum(torch.square(gt_position-predicted_position),axis=-1)))

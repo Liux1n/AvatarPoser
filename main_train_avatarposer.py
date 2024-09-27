@@ -24,7 +24,13 @@ from data.select_dataset import define_Dataset
 from models.select_model import define_Model
 from utils import utils_transform
 import pickle
-from utils import utils_visualize as vis
+# from utils import utils_visualize as vis
+
+gpu_id = 0
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
+torch.cuda.set_device(gpu_id)
+device = torch.device('cuda')
 
 save_animation = False
 resolution = (800,800)
@@ -150,6 +156,9 @@ def main(json_path='options/train_avatarposer.json'):
             # -------------------------------
             # 1) feed patch pairs
             # -------------------------------
+            # move data to GPU
+            # for key, value in train_data.items():
+            #     train_data[key] = value.to(device)
             
             model.feed_data(train_data)
 
@@ -218,17 +227,17 @@ def main(json_path='options/train_avatarposer.json'):
 
 
 
-                    if index in [0, 10, 20] and save_animation:
-                        video_dir = os.path.join(opt['path']['images'], str(index))
-                        if not os.path.exists(video_dir):
-                            os.makedirs(video_dir)
+                    # if index in [0, 10, 20] and save_animation:
+                    #     video_dir = os.path.join(opt['path']['images'], str(index))
+                    #     if not os.path.exists(video_dir):
+                    #         os.makedirs(video_dir)
 
-                        save_video_path_gt = os.path.join(video_dir, 'gt.avi')
-                        if not os.path.exists(save_video_path_gt):
-                            vis.save_animation(body_pose=gt_body, savepath=save_video_path_gt, bm = model.bm, fps=60, resolution = resolution)
+                    #     save_video_path_gt = os.path.join(video_dir, 'gt.avi')
+                    #     if not os.path.exists(save_video_path_gt):
+                    #         vis.save_animation(body_pose=gt_body, savepath=save_video_path_gt, bm = model.bm, fps=60, resolution = resolution)
 
-                        save_video_path = os.path.join(video_dir, '{:d}.avi'.format(current_step))
-                        vis.save_animation(body_pose=predicted_body, savepath=save_video_path, bm = model.bm, fps=60, resolution = resolution)
+                    #     save_video_path = os.path.join(video_dir, '{:d}.avi'.format(current_step))
+                    #     vis.save_animation(body_pose=predicted_body, savepath=save_video_path, bm = model.bm, fps=60, resolution = resolution)
 
 
                     predicted_position = predicted_position#.cpu().numpy()

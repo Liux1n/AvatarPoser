@@ -1,5 +1,6 @@
 support_data/body_models
 results
+dataset_amass
 *.pkl
 *fps60
 **/__pycache__

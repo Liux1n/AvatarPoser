@@ -17,7 +17,7 @@ from utils import utils_transform
 import time
 import pickle
 
-dataroot_amass ="amass" # root of amass dataset
+dataroot_amass ="/local/home/liuqing/SP/dataset_amass" # root of amass dataset
 
 for dataroot_subset in ["MPI_HDM05", "BioMotionLab_NTroje", "CMU"]:
     print(dataroot_subset)
@@ -56,6 +56,8 @@ for dataroot_subset in ["MPI_HDM05", "BioMotionLab_NTroje", "CMU"]:
 
         idx = 0
         for filepath in filepaths:
+            # print("111",filepath)
+            filepath = os.path.join(dataroot_amass, filepath)
             data = dict()
             bdata = np.load(filepath,allow_pickle=True)
             # print(list(bdata.keys())) ### check keys of body data: ['trans', 'gender', 'mocap_framerate', 'betas', 'dmpls', 'poses']
