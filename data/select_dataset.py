@@ -13,6 +13,9 @@ def define_Dataset(dataset_opt):
 
     if dataset_type in ['amass']:
         from data.dataset_amass import AMASS_Dataset as D
+    
+    elif dataset_type in ['hps']:
+        from data.dataset_hps import HPS_Dataset as D
 
 
     else:

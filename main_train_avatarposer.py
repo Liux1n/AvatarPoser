@@ -159,6 +159,8 @@ def main(json_path='options/train_avatarposer.json'):
             # move data to GPU
             # for key, value in train_data.items():
             #     train_data[key] = value.to(device)
+            for key, value in train_data.items():
+                print(key)
             
             model.feed_data(train_data)
 

@@ -21,7 +21,7 @@ from data.select_dataset import define_Dataset
 from models.select_model import define_Model
 # from utils import utils_visualize as vis
 
-save_animation = False
+save_animation = True
 resolution = (800,800)
 
 def main(json_path='options/test_avatarposer.json'):
